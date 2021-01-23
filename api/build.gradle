@@ -1,0 +1,145 @@
+plugins {
+  id 'org.springframework.boot' version '2.4.2'
+}
+
+apply plugin: 'war'
+apply plugin: 'io.spring.dependency-management'
+
+// pulls out properties from a global properties file
+Properties env = new Properties()
+File subPropertiesFile = new File("$projectDir/env.properties")
+subPropertiesFile.withInputStream {
+  env.load(it)
+}
+
+// define environment and application settings
+def applicationName = env.APPLICATION_NAME
+def buildNumber = env.APPLICATION_BUILD_NUMBER
+group = env.APPLICATION_GROUP
+version = env.APPLICATION_VERSION
+def javaVersion = JavaVersion.toVersion(env.JAVA_VERSION)
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+compileJava.options.encoding = env.ENCODING
+
+def archiveName = "${applicationName}##${version + '.' + buildNumber}"
+
+def profiles
+
+// configure tasks
+bootRun {
+  args = [
+    "--spring.profiles.active=${profiles}",
+  ]
+}
+
+bootJar {
+  archiveFileName = "${archiveName}.jar"
+}
+
+bootWar {
+  archiveFileName = "${archiveName}.war"
+}
+
+test {
+  useJUnitPlatform()
+
+  // need to be able to pass through the active profile supplied in gradle task
+  // systemProperty 'spring.profiles.active', profiles
+}
+
+configurations {
+  developmentOnly
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+ext {
+  H2_VERSION = "1.4.+"
+  JUNIT_VERSION = "5.3.1"
+  MAPSTRUCT_VERSION = '1.4.1.Final'
+  MAPSTRUCT_BINDING_VERSION = '0.2.0'
+  MOCKITO_VERSION = '2.18.3'
+  RESTASSURED_VERSION = '4.1.2'
+  XML_VERSION = '2.+'
+}
+
+compileJava {
+    options.compilerArgs += [
+        '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+
+dependencies {
+  runtimeOnly "com.h2database:h2"
+
+  implementation project(':dtos')
+  annotationProcessor "jakarta.xml.bind:jakarta.xml.bind-api:$XML_VERSION" // JAXB annotations
+  annotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
+  annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+  annotationProcessor "org.projectlombok:lombok" // annotations for getters/setters/ctors/equals/hashCode
+  annotationProcessor "org.projectlombok:lombok-mapstruct-binding:$MAPSTRUCT_BINDING_VERSION"
+  developmentOnly "org.springframework.boot:spring-boot-devtools" // better dev experience in bootRun
+  implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-xml" // can produce XML responses
+  implementation "org.mapstruct:mapstruct:$MAPSTRUCT_VERSION" // easier/faster DTOs
+  implementation "org.springframework.boot:spring-boot-starter-actuator" // health checks
+  implementation "org.springframework.boot:spring-boot-starter-data-jpa" // persistance and validation with hibernate
+  implementation "org.springframework.boot:spring-boot-starter-web" // allows for 'controllers'
+  providedRuntime "org.springframework.boot:spring-boot-starter-tomcat" // set to 'providedRuntime' to allow both jar/war deploys
+  testAnnotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
+  testImplementation "org.mockito:mockito-junit-jupiter:$MOCKITO_VERSION"
+  testImplementation "io.rest-assured:rest-assured-all:$RESTASSURED_VERSION" // easier REST testing
+  testImplementation "io.rest-assured:spring-mock-mvc:3.3.0" // test mocks
+	testImplementation ("org.springframework.boot:spring-boot-starter-test") { // allows for SpringBootTest
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+	}
+}
+
+// publishing {
+//   publications {
+//     maven(MavenPublication) {
+//       groupId = project.group
+//       artifactId = applicationName
+//       version = "${project.version}.${buildNumber}"
+//       artifact bootJar
+//     }
+//   }
+// }
+
+// artifactory {
+//   contextUrl = "https://jack.hc-sc.gc.ca/artifactory/"
+//   publish {
+//     repository {
+//       repoKey = 'gradle-local'
+//       maven = true
+//     }
+
+//     defaults {
+//       publications('maven')
+//       publishArtifacts = true
+//       publishPom = true
+//     }
+//   }
+
+//   resolve {
+//     repository {
+//       repoKey = 'maven-central-cache'
+//       maven = true
+//     }
+//   }
+// }
+
+// make sure your environment is set up correctly!
+task checkEnvironment {
+  doFirst {
+    if(JavaVersion.current() != javaVersion) {
+      throw new GradleException("Configured version of Java (${javaVersion}) is different than the host version (${JavaVersion.current()})")
+    }
+
+    println "Spring Boot profiles: ${profiles}"
+    println "Java: ${javaVersion} (${env.JAVA_VERSION})"
+  }
+}
+
+compileJava.dependsOn checkEnvironment
