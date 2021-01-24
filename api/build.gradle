@@ -26,13 +26,6 @@ def archiveName = "${applicationName}##${version + '.' + buildNumber}"
 
 def profiles
 
-// configure tasks
-bootRun {
-  args = [
-    "--spring.profiles.active=${profiles}",
-  ]
-}
-
 bootJar {
   archiveFileName = "${archiveName}.jar"
 }
