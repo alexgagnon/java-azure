@@ -1,4 +1,4 @@
-package org.example.pages;
+package org.example.pages.index;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,10 +18,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HomeController {
-  private static final Logger log = LoggerFactory.getLogger(HomeController.class);
+public class IndexController {
+  private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
-  @GetMapping("/home")
+  @GetMapping("/")
   public String index(Model model) {
     HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://localhost:9443/employees"))
         .timeout(Duration.ofMinutes(1)).GET().build();

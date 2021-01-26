@@ -12,6 +12,10 @@ subPropertiesFile.withInputStream {
   env.load(it)
 }
 
+repositories {
+  mavenLocal()
+}
+
 // define environment and application settings
 def applicationName = env.APPLICATION_NAME
 def buildNumber = env.APPLICATION_BUILD_NUMBER
@@ -49,6 +53,7 @@ configurations {
 }
 
 ext {
+  CDTS_VERSION = "2.1.0"
   JUNIT_VERSION = "5.3.1"
   MAPSTRUCT_VERSION = '1.4.1.Final'
   MAPSTRUCT_BINDING_VERSION = '0.2.0'
@@ -64,7 +69,11 @@ compileJava {
 
 dependencies {
   implementation project(':dtos')
-  implementation fileTree(include: ["*.jar"], dir: "libs")
+  implementation "ca.gc.gocwebtemplate:gocwebtemplate-core:$CDTS_VERSION"
+  implementation "ca.gc.gocwebtemplate:gocwebtemplate-core-base:$CDTS_VERSION"
+  implementation "ca.gc.gocwebtemplate:gocwebtemplate-core-spring:$CDTS_VERSION"
+
+  // implementation fileTree(include: ["*.jar"], dir: "libs")
   annotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
   annotationProcessor "org.projectlombok:lombok" // annotations for getters/setters/ctors/equals/hashCode
