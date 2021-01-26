@@ -64,6 +64,7 @@ compileJava {
 
 dependencies {
   implementation project(':dtos')
+  implementation fileTree(include: ["*.jar"], dir: "libs")
   annotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
   annotationProcessor "org.projectlombok:lombok" // annotations for getters/setters/ctors/equals/hashCode
