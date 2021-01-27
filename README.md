@@ -14,7 +14,9 @@ Components:
   - Smoke testing: k6
   - Load testing: k6
 - DB
-  - Integration testing: TestContainers
+  - Integration testing: Testcontainers
+
+**NOTE: this project installs certs so you can develop locally over HTTPS. You need to have `mkcert` installed**
 
 ## Desired Environments for testing:
 

@@ -36,9 +36,6 @@ bootWar {
 
 test {
   useJUnitPlatform()
-
-  // need to be able to pass through the active profile supplied in gradle task
-  // systemProperty 'spring.profiles.active', profiles
 }
 
 configurations {
@@ -50,11 +47,12 @@ configurations {
 
 ext {
   H2_VERSION = "1.4.+"
-  JUNIT_VERSION = "5.3.1"
+  JUNIT_VERSION = "5.4.2"
   MAPSTRUCT_VERSION = '1.4.1.Final'
   MAPSTRUCT_BINDING_VERSION = '0.2.0'
   MOCKITO_VERSION = '2.18.3'
   RESTASSURED_VERSION = '4.1.2'
+  TESTCONTAINERS_VERSION = '1.15.1'
   XML_VERSION = '2.+'
 }
 
@@ -65,7 +63,15 @@ compileJava {
 }
 
 dependencies {
-  runtimeOnly "com.h2database:h2"
+  // runtimeOnly "com.h2database:h2"
+
+  // testCompile "org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion"
+  // testCompile "org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion"
+  // testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion"
+  implementation "org.testcontainers:postgresql:1.15.1"
+  implementation "org.postgresql:postgresql:42.2.18"
+  runtimeOnly "org.testcontainers:testcontainers:$TESTCONTAINERS_VERSION"
+  testCompile "org.testcontainers:junit-jupiter:$TESTCONTAINERS_VERSION"
 
   implementation project(':dtos')
   annotationProcessor "jakarta.xml.bind:jakarta.xml.bind-api:$XML_VERSION" // JAXB annotations
@@ -84,9 +90,8 @@ dependencies {
   testImplementation "org.mockito:mockito-junit-jupiter:$MOCKITO_VERSION"
   testImplementation "io.rest-assured:rest-assured-all:$RESTASSURED_VERSION" // easier REST testing
   testImplementation "io.rest-assured:spring-mock-mvc:3.3.0" // test mocks
-	testImplementation ("org.springframework.boot:spring-boot-starter-test") { // allows for SpringBootTest
-		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
-	}
+	testImplementation ("org.springframework.boot:spring-boot-starter-test") // allows for SpringBootTest
+
 }
 
 // publishing {
