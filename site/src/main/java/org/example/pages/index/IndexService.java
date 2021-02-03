@@ -19,19 +19,21 @@ public class IndexService {
   private static final Logger log = LoggerFactory.getLogger(IndexService.class);
 
   public List<EmployeeDTO> getEmployees() {
+    log.debug("Getting employees");
     HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://localhost:9443/employees"))
         .timeout(Duration.ofMinutes(1)).GET().build();
 
     @SuppressWarnings("unchecked")
     Class<List<EmployeeDTO>> clazz = (Class) List.class;
     try {
-
       List<EmployeeDTO> employees = ApiClient.getApiClient()
           .send(request, new JsonBodyHandler<List<EmployeeDTO>>(clazz)).body().get();
 
+      log.debug("" + employees.size());
       return employees;
 
     } catch (IOException | InterruptedException e) {
+      log.error(e.getMessage());
       return new ArrayList<EmployeeDTO>();
     }
   }
