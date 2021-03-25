@@ -16,6 +16,7 @@ gradle-app.setting
 *.p12
 
 # IDE specific files
+.settings/
 .classpath
 .project
 .idea
