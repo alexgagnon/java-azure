@@ -29,7 +29,11 @@ compileJava.options.encoding = env.ENCODING
 
 def archiveName = "${applicationName}##${version + '.' + buildNumber}"
 
-def profiles
+def profiles = project.hasProperty('profiles') ? project.property('profiles') : "local,https"
+
+bootRun {
+  args = ["--spring.profiles.active=$profiles"]
+}
 
 bootJar {
   archiveFileName = "${archiveName}.jar"
@@ -103,12 +107,6 @@ task checkEnvironment {
       throw new GradleException("Configured version of Java (${javaVersion}) is different than the host version (${JavaVersion.current()})")
     }
 
-    if(gradle.gradleVersion != gradleVersion) {
-      throw new GradleException("Configured version of Gradle (${gradleVersion}) is different than the one used in the build (${gradle.gradleVersion})")
-    }
-
-    println "Gradle: ${gradle.gradleVersion}"
-    println "Spring Boot profiles: ${profiles}"
     println "Java: ${javaVersion} (${env.JAVA_VERSION})"
   }
 }

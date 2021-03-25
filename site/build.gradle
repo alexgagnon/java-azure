@@ -1,5 +1,5 @@
 plugins {
-  id 'org.springframework.boot' version '2.2.1.RELEASE'
+  id 'org.springframework.boot' version '2.4.2'
 }
 
 apply plugin: 'war'
@@ -29,7 +29,11 @@ compileJava.options.encoding = env.ENCODING
 
 def archiveName = "${applicationName}##${version + '.' + buildNumber}"
 
-def profiles
+def profiles = project.hasProperty('profiles') ? project.property('profiles') : "local,https"
+
+bootRun {
+  args = ["--spring.profiles.active=$profiles"]
+}
 
 bootJar {
   archiveFileName = "${archiveName}.jar"
@@ -73,10 +77,6 @@ compileJava {
 
 dependencies {
   implementation project(':dtos')
-  // implementation "ca.gc.gocwebtemplate:gocwebtemplate-core:$CDTS_VERSION"
-  // implementation "ca.gc.gocwebtemplate:gocwebtemplate-core-base:$CDTS_VERSION"
-  // implementation "ca.gc.gocwebtemplate:gocwebtemplate-core-spring:$CDTS_VERSION"
-
   implementation fileTree(include: ["*.jar"], dir: "libs")
   annotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
@@ -103,12 +103,6 @@ task checkEnvironment {
       throw new GradleException("Configured version of Java (${javaVersion}) is different than the host version (${JavaVersion.current()})")
     }
 
-    if(gradle.gradleVersion != gradleVersion) {
-      throw new GradleException("Configured version of Gradle (${gradleVersion}) is different than the one used in the build (${gradle.gradleVersion})")
-    }
-
-    println "Gradle: ${gradle.gradleVersion}"
-    println "Spring Boot profiles: ${profiles}"
     println "Java: ${javaVersion} (${env.JAVA_VERSION})"
   }
 }

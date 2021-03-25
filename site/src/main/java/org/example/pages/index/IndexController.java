@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import lombok.Data;
 
 @Controller
 public class IndexController {
@@ -16,7 +20,19 @@ public class IndexController {
 
   @GetMapping("/")
   public String index(Model model) {
+    System.out.println("another test");
     model.addAttribute("employees", indexService.getEmployees());
     return "index";
+  }
+
+  @PostMapping("/employees")
+  public String index(@RequestBody FormBody formBody) {
+    return "index";
+  }
+
+  @Data
+  class FormBody {
+    private String name;
+    private String role;
   }
 }
