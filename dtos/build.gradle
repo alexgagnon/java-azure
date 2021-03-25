@@ -13,14 +13,17 @@ subPropertiesFile.withInputStream {
 }
 
 // define environment and application settings
-def applicationName = env.APPLICATION_NAME
-def buildNumber = env.APPLICATION_BUILD_NUMBER
-group = env.APPLICATION_GROUP
-version = env.APPLICATION_VERSION
+def gradleVersion = env.GRADLE_VERSION
+def applicationName = env.NAME
+def buildNumber = env.BUILD_NUMBER
+group = env.GROUP
+version = env.VERSION
 def javaVersion = JavaVersion.toVersion(env.JAVA_VERSION)
 sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 compileJava.options.encoding = env.ENCODING
+
+def archiveName = env.FILENAME
 
 ext {
   LOMBOK_VERSION = '1.18.+'
