@@ -1,9 +1,9 @@
 ARG TOMCAT_VERSION
-ARG FILENAME
+ARG ARCHIVE_NAME
 
-FROM tomcat:$TOMCAT_VERSION
+FROM tomcat:${TOMCAT_VERSION}
 WORKDIR /usr/local/tomcat
-COPY ./build/libs/${FILENAME}.war ./webapps/
+COPY ./build/libs/${ARCHIVE_NAME}.war ./webapps/
 
 # required for Oracle DB client
 ENV TZ=EST

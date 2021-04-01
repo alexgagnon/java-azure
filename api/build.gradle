@@ -28,14 +28,14 @@ sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 compileJava.options.encoding = env.ENCODING
 
-def archiveName = env.FILENAME
+def archiveName = env.ARCHIVE_NAME
 
-def profiles = project.hasProperty('profiles')
+def profiles = (project.hasProperty('profiles')
   ? project.property('profiles')
-  : "local,https"
+  : "local,https").split(",")
 
 bootRun {
-  args = ["--spring.profiles.active=$profiles"]
+  args = ["--spring.profiles.active=${profiles.join()}"]
 }
 
 bootJar {
@@ -50,7 +50,7 @@ test {
   useJUnitPlatform()
 
   // need to be able to pass through the active profile supplied in gradle task
-  systemProperty 'spring.profiles.active', profiles
+  systemProperty 'spring.profiles.active', profiles.join()
 }
 
 configurations {
@@ -67,7 +67,9 @@ ext {
   MAPSTRUCT_BINDING_VERSION = '0.2.0'
   MOCKITO_VERSION = '2.18.3'
   RESTASSURED_VERSION = '4.1.2'
+  SWAGGER_UI_VERSION= '3.45.1'
   TESTCONTAINERS_VERSION = '1.15.1'
+  WEBJARS_LOCATION_VERSION = '0.30'
   XML_VERSION = '2.+'
 }
 
@@ -78,14 +80,25 @@ compileJava {
 }
 
 dependencies {
-  runtimeOnly "com.h2database:h2"
-
-  implementation "org.testcontainers:postgresql:1.15.1"
-  implementation "org.postgresql:postgresql:42.2.18"
-  runtimeOnly "org.testcontainers:testcontainers:$TESTCONTAINERS_VERSION"
-  testCompile "org.testcontainers:junit-jupiter:$TESTCONTAINERS_VERSION"
-
   implementation project(':dtos')
+
+  if (profiles.contains("local") && !profiles.contains("tc")) {
+    runtimeOnly "com.h2database:h2"
+  }
+
+  else {
+    implementation "org.postgresql:postgresql:42.2.18"
+
+    if (profiles.contains("tc")) {
+      implementation "org.testcontainers:postgresql:1.15.1"
+      runtimeOnly "org.testcontainers:testcontainers:$TESTCONTAINERS_VERSION"
+      testCompile "org.testcontainers:junit-jupiter:$TESTCONTAINERS_VERSION"
+    }
+  }
+
+  implementation "org.webjars.npm:swagger-ui-dist:$SWAGGER_UI_VERSION"
+  implementation "org.webjars:webjars-locator:$WEBJARS_LOCATION_VERSION"
+
   annotationProcessor "jakarta.xml.bind:jakarta.xml.bind-api:$XML_VERSION" // JAXB annotations
   annotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
   annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"

@@ -23,7 +23,7 @@ sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 compileJava.options.encoding = env.ENCODING
 
-def archiveName = env.FILENAME
+def archiveName = env.ARCHIVE_NAME
 
 ext {
   LOMBOK_VERSION = '1.18.+'
