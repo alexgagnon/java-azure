@@ -6,15 +6,14 @@ Components:
 
 - Frontend - Java + Spring + Thymeleaf
   - Unit testing: JUnit
-  - System (e2e) testing: Playwright
-  - Accessibility + Performance: Lighthouse
+  - System testing (e2e/a11y/perf): Playwright + axe-core
 - API - Java + Spring
   - Unit testing: JUnit
   - Integration testing: newman
   - Smoke testing: k6
   - Load testing: k6
 - DB
-  - Integration testing: Testcontainers
+  - Integration testing: TestContainers
 
 **NOTE: this project installs certs so you can develop locally over HTTPS. You need to have `mkcert` installed**
 
@@ -28,9 +27,11 @@ Components:
 ## TODO
 
 - [ ] API
-  - [ ] create openapi spec
+  - [x] create openapi spec
   - [ ] generate smoke tests
   - [ ] generate load tests
 - [ ] Frontend
   - [ ] create authenticated routes
-  - [ ] generate e2e tests
+  - [ ] generate e2e/smoke/a11y tests
+  - [ ] automatically source endpoints from API's OpenAPI spec
+- [ ] get devtools working with auto restart

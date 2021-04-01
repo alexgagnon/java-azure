@@ -36,6 +36,9 @@ paths:
     x-i18n-path:
       fr: /employees/vrac
 
+    description: Operations on  multiple employees at once
+    x-i18n-description:
+
     post:
       operationId: 'createEmployees'
       responses:
