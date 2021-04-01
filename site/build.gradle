@@ -30,12 +30,12 @@ compileJava.options.encoding = env.ENCODING
 
 def archiveName = env.ARCHIVE_NAME
 
-def profiles = project.hasProperty('profiles')
+def profiles = (project.hasProperty('profiles')
   ? project.property('profiles')
-  : "local,https"
+  : "local,https").split(",");
 
 bootRun {
-  args = ["--spring.profiles.active=$profiles"]
+  args = ["--spring.profiles.active=${profiles.join(",")}"]
 }
 
 bootJar {
@@ -50,7 +50,7 @@ test {
   useJUnitPlatform()
 
   // need to be able to pass through the active profile supplied in gradle task
-  systemProperty 'spring.profiles.active', profiles
+  systemProperty 'spring.profiles.active', profiles.join(",")
 }
 
 configurations {

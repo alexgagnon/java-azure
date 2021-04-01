@@ -35,7 +35,7 @@ def profiles = (project.hasProperty('profiles')
   : "local,https").split(",")
 
 bootRun {
-  args = ["--spring.profiles.active=${profiles.join()}"]
+  args = ["--spring.profiles.active=${profiles.join(",")}"]
 }
 
 bootJar {
@@ -50,7 +50,7 @@ test {
   useJUnitPlatform()
 
   // need to be able to pass through the active profile supplied in gradle task
-  systemProperty 'spring.profiles.active', profiles.join()
+  systemProperty 'spring.profiles.active', profiles.join(",")
 }
 
 configurations {
