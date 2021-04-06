@@ -23,13 +23,13 @@ paths:
       operationId: 'getEmployees'
       responses:
         200:
-          $ref: 'components/responses/Employee'
+          $ref: '#/components/responses/Employee'
 
     post:
       operationId: 'createEmployee'
       responses:
         200:
-          $ref: 'components/responses/Employee'
+          $ref: '#/components/responses/Employee'
 
 
   /employees/bulk:
@@ -43,13 +43,13 @@ paths:
       operationId: 'createEmployees'
       responses:
         200:
-          $ref: 'componens/responses/EmployeeList'
+          $ref: '#/components/responses/EmployeeList'
 
     put:
       operationId: 'updateEmployees'
       responses:
         200:
-          $ref: 'components/responses/EmployeeList'
+          $ref: '#/components/responses/EmployeeList'
 
     delete:
       operationId: 'deleteEmployees'
@@ -59,7 +59,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: 'components/schemas/Employee'
+                $ref: '#/components/schemas/Employee'
       responses:
         200:
           description: OK
@@ -80,25 +80,25 @@ paths:
       operationId: 'getEmployeeById'
       responses:
         200:
-          $ref: 'components/responses/Employee'
+          $ref: '#/components/responses/Employee'
 
     patch:
       operationId: 'replaceEmployeeById'
       responses:
         200:
-          $ref: 'components/responses/Employee'
+          $ref: '#/components/responses/Employee'
 
     put:
       operationId: 'updateEmployeeById'
       responses:
         200:
-          $ref: 'components/responses/Employee'
+          $ref: '#/components/responses/Employee'
 
     delete:
       operationId: 'deleteEmployeeById'
       responses:
         200:
-          $ref: 'components/responses/Employee'
+          $ref: '#/components/responses/Employee'
 
 
 components:
@@ -121,7 +121,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: 'components/schemas/Employee'
+            $ref: '#/components/schemas/Employee'
 
     EmployeeList:
       description: OK
@@ -130,7 +130,7 @@ components:
           schema:
             type: array
             items:
-              $ref: components/schemas/Employee
+              $ref: '#/components/schemas/Employee'
 
 
 

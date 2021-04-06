@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "openapi.path",
+  "type": "java.lang.String",
+  "description": "Path to the OpenAPI specification file representing the API"
+}]}
