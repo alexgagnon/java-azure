@@ -17,11 +17,11 @@ import org.yaml.snakeyaml.Yaml;
 
 @Controller
 public class OpenAPISpecController {
-  @Value("${openapi.file")
+  @Value("${openapi.file}")
   private String openapiFile;
 
   // because of our CustomContentNegotiation filter, this needs to return JSON
-  @GetMapping(value = "${openapiPath}", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "${openapi.path}", produces = MediaType.APPLICATION_JSON_VALUE)
   public @ResponseBody String getOpenApiSpec() throws IOException {
     Resource resource = new ClassPathResource(openapiFile);
     String data = new String(resource.getInputStream().readAllBytes());
