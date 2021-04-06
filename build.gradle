@@ -9,6 +9,8 @@ subPropertiesFile.withInputStream {
   env.load(it)
 }
 
+def javaVersion = JavaVersion.
+
 def checkEnvironment(env) {
   if(gradle.gradleVersion != env.GRADLE_VERSION) {
     throw new GradleException("Configured version of Gradle (${env.GRADLE_VERSION}) is different than the one used in the build (${gradle.gradleVersion})")
