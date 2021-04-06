@@ -4,15 +4,22 @@ info:
   version: "1.0"
 
 servers:
-  - url: https://{baseUrl}/api/v1/
+  - url: https://{domain}:{port}/api/v1/
     variables:
-      baseUrl:
-        description: The base URL for the API
-        default: 'localhost'
+      domain:
+        description: The domain for the API
+        default: 'example.org'
         enum:
           - localhost
           - staging.example.org
           - example.org
+      port:
+          description: The port for the API
+          default: '443'
+          enum:
+            - '8080'
+            - '8443'
+            - '443'
 
 paths:
   /employees:
@@ -108,12 +115,6 @@ components:
       properties:
         name:
           type: string
-
-    IdList:
-      description: List of IDs on which to operate
-      type: array
-      items:
-        type: string
 
   responses:
     Employee:

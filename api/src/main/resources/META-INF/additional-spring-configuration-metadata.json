@@ -1,5 +1,12 @@
-{"properties": [{
-  "name": "openapi.path",
-  "type": "java.lang.String",
-  "description": "Path to the OpenAPI specification file representing the API"
-}]}
+{"properties": [
+  {
+    "name": "openapi.path",
+    "type": "java.lang.String",
+    "description": "The path serving the OpenAPI document"
+  },
+  {
+    "name": "openapi.file",
+    "type": "java.lang.String",
+    "description": "The OpenAPI file path"
+  }
+]}
