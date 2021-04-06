@@ -61,6 +61,7 @@ configurations {
 }
 
 ext {
+  DB_DRIVER_VERSION= "42.2.18"
   H2_VERSION = "1.4.+"
   JUNIT_VERSION = "5.4.2"
   MAPSTRUCT_VERSION = '1.4.1.Final'
@@ -74,9 +75,9 @@ ext {
 }
 
 compileJava {
-    options.compilerArgs += [
-        '-Amapstruct.defaultComponentModel=spring'
-    ]
+  options.compilerArgs += [
+    '-Amapstruct.defaultComponentModel=spring'
+  ]
 }
 
 dependencies {
@@ -87,17 +88,14 @@ dependencies {
   }
 
   else {
-    implementation "org.postgresql:postgresql:42.2.18"
+    implementation "org.postgresql:postgresql:DB_DRIVER_VERSION"
 
     if (profiles.contains("tc")) {
-      implementation "org.testcontainers:postgresql:1.15.1"
+      implementation "org.testcontainers:postgresql:$TESTCONTAINERS_VERSION"
       runtimeOnly "org.testcontainers:testcontainers:$TESTCONTAINERS_VERSION"
       testCompile "org.testcontainers:junit-jupiter:$TESTCONTAINERS_VERSION"
     }
   }
-
-  implementation "org.webjars.npm:swagger-ui-dist:$SWAGGER_UI_VERSION"
-  implementation "org.webjars:webjars-locator:$WEBJARS_LOCATION_VERSION"
 
   annotationProcessor "jakarta.xml.bind:jakarta.xml.bind-api:$XML_VERSION" // JAXB annotations
   annotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
