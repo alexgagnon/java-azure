@@ -32,7 +32,7 @@ def archiveName = env.ARCHIVE_NAME
 
 def profiles = (project.hasProperty('profiles')
   ? project.property('profiles')
-  : "local,https").split(",");
+  : env.DEFAULT_LOCAL_PROFILES).split(",");
 
 bootRun {
   args = ["--spring.profiles.active=${profiles.join(",")}"]
