@@ -25,19 +25,17 @@ Components:
 - DB
   - Integration testing: TestContainers
 
-**NOTE: this project installs certs so you can develop locally over HTTPS. You need to have `mkcert` installed**
-
 ## Getting Started
 
 This is a Gradle based multiproject repository. The repo template contains an API (/api) and a website (/site). This is to make it easy to create 3-tier systems, but if you don't need one or the other, you can just delete them.
 
-There is a third module, DTOs (/dtos), which is where you should create your inter-service models if using SSR (Java to Java). If your front-end is SPA (JavaScript to Java) or are not using the API Client approach from the website server, this isn't required as communication is done over AJAX.
+There is a third module, DTOs (/dtos), which is where you should create your inter-service models if using SSR (Java to Java). If your front-end is SPA (JavaScript to Java) or are not using the API Client approach from the website server, this isn't required as communication is done over AJAX. If you delete the module, you will need to remove it as a dependency from the API and the website modules (in the `dependencies` block of `build.gradle`, remove `implementation project(':dtos')`)
 
 The recommended way to run Gradle is with `./gradlew <task>` on Linux/Mac, `./gradlew.bat <task>` in Windows, or using the Gradle plugins available for most modern IDEs. If not, you should make sure Gradle version is consistent across all environments. The root `/env.properties` file explicitely indicates the Gradle version that should be used and is checked whenever running a Gradle task.
 
 ## Configuration
 
-Each module defines it's own metadata in their directories `env.properties` file, such as application name and version. Primary Spring Boot properties are configured in the `src/main/resources/application.properties`, and profile dependent ones are in `src/main/resources/application-<profile>.properties`.
+Each module defines its own metadata in their directories `env.properties` file, such as application name and version. Primary Spring Boot properties are configured in the `src/main/resources/application.properties`, and profile dependent ones are in `src/main/resources/application-<profile>.properties`.
 
 NOTE: although each module can theoretically define their own Java version, it's much easier to run top-level Gradle tasks if they are the same. If you're using SDKMan as your Java SDK version manager you can define the exact Java vendor/version you want in the root `/.sdkmanrc` file, which you can set using `sdk env`. If you have SDKMans sdkman_auto_env property configured, whenever you work in the root directory it will automatically set the correct version.
 
