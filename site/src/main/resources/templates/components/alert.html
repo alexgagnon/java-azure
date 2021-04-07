@@ -1,0 +1,8 @@
+<section
+  th:fragment="alert(type,dismissable,heading,content)"
+  th:class="alert"
+  th:classappend="|alert-${type}|"
+>
+  <heading th:replace="${heading}"></heading>
+  <div th:replace="${content}"></div>
+</section>
