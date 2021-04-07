@@ -1,7 +1,11 @@
 package org.example;
 
-// @Testcontainers
-public class RedisBackedCacheIntTest {
+import org.springframework.context.annotation.Profile;
+import org.testcontainers.junit.jupiter.Testcontainers;
+
+@Profile("tc")
+@Testcontainers
+public class SampleIntegrationTest {
 
   // // container {
   // @Container

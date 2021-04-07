@@ -1,11 +1,5 @@
 package org.example.config;
 
-/**
- * This class is used to override the default way Spring handles 'Accept' headers,
- * since we want to provide XML only for application/xml explicitely,
- * NOT browser requests of the type "Accept: text/html, ..., application/xml"
- */
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,13 +19,15 @@ public class CustomContentNegotiationStrategy implements ContentNegotiationStrat
 
     Set<MediaType> mediaTypes = new HashSet<>();
     String acceptHeader = nativeWebRequest.getHeader(HttpHeaders.ACCEPT);
-    if (acceptHeader == null || isBrowserRequest(acceptHeader) || acceptHeader.contains(MediaType.ALL_VALUE))
+    if (acceptHeader == null || isBrowserRequest(acceptHeader) || acceptHeader.contains(MediaType.ALL_VALUE)) {
       mediaTypes.add(MediaType.APPLICATION_JSON);
-    else if (acceptHeader.contains(MediaType.APPLICATION_XML_VALUE))
+    } else if (acceptHeader.contains(MediaType.APPLICATION_XML_VALUE)) {
       mediaTypes.add(MediaType.APPLICATION_XML);
-    else
+    } else {
       mediaTypes.add(DEFAULT_MEDIA_TYPE);
+    }
     return new ArrayList<>(mediaTypes);
+
   }
 
   // basic heuristic to see if the request comes from a browser
