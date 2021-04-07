@@ -61,7 +61,7 @@ configurations {
 }
 
 ext {
-  DB_DRIVER_VERSION= "42.2.18"
+  DB_DRIVER_VERSION = "42.2.18"
   H2_VERSION = "1.4.+"
   JUNIT_VERSION = "5.4.2"
   MAPSTRUCT_VERSION = '1.4.1.Final'
@@ -74,6 +74,7 @@ ext {
   XML_VERSION = '2.+'
 }
 
+// makes MapStruct generate code that is Spring compliant
 compileJava {
   options.compilerArgs += [
     '-Amapstruct.defaultComponentModel=spring'
@@ -83,19 +84,19 @@ compileJava {
 dependencies {
   implementation project(':dtos')
 
-  if (profiles.contains("local") && !profiles.contains("tc")) {
-    runtimeOnly "com.h2database:h2"
-  }
+  // if (profiles.contains("local") && !profiles.contains("tc")) {
+    // runtimeOnly "com.h2database:h2"
+  // }
 
-  else {
-    implementation "org.postgresql:postgresql:DB_DRIVER_VERSION"
+  // else {
+    implementation "org.postgresql:postgresql:$DB_DRIVER_VERSION"
 
-    if (profiles.contains("tc")) {
+    // if (profiles.contains("tc")) {
       implementation "org.testcontainers:postgresql:$TESTCONTAINERS_VERSION"
       runtimeOnly "org.testcontainers:testcontainers:$TESTCONTAINERS_VERSION"
       testCompile "org.testcontainers:junit-jupiter:$TESTCONTAINERS_VERSION"
-    }
-  }
+    // }
+  // }
 
   annotationProcessor "jakarta.xml.bind:jakarta.xml.bind-api:$XML_VERSION" // JAXB annotations
   annotationProcessor "org.mapstruct:mapstruct-processor:$MAPSTRUCT_VERSION" // easier/faster DTOs
