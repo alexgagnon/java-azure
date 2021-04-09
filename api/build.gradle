@@ -28,7 +28,7 @@ sourceCompatibility = javaVersion
 targetCompatibility = javaVersion
 compileJava.options.encoding = env.ENCODING
 
-def archiveName = env.ARCHIVE_NAME
+def archiveName = "${applicationName}##${version}.${buildNumber}"
 
 def profiles = (project.hasProperty('profiles')
   ? project.property('profiles')
