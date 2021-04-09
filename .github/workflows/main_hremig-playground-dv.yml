@@ -23,7 +23,7 @@ jobs:
         distribution: 'adopt'
 
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew bootWar
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v2
