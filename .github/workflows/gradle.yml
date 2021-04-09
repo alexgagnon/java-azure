@@ -23,5 +23,11 @@ jobs:
         distribution: 'adopt'
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Test
+      run: ./gradlew test
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew bootWar
+    - uses: actions/upload-artifact@v2
+      with:
+        name: Package
+        path: api/build/libs
