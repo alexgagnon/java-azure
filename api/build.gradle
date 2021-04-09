@@ -84,9 +84,9 @@ compileJava {
 dependencies {
   implementation project(':dtos')
 
-  // if (profiles.contains("local") && !profiles.contains("tc")) {
-    // runtimeOnly "com.h2database:h2"
-  // }
+  if (profiles.contains("local") && !profiles.contains("tc")) {
+    runtimeOnly "com.h2database:h2"
+  }
 
   // else {
     implementation "org.postgresql:postgresql:$DB_DRIVER_VERSION"
